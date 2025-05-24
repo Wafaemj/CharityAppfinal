@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Faire un don - HeartShare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .donation-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .donation-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        .donation-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .donation-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .donation-header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .form-control {
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+        .btn-donate {
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .btn-donate:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .amount-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .amount-option {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .amount-option:hover {
+            border-color: #3498db;
+            background-color: #f7f9fc;
+        }
+        .amount-option.selected {
+            border-color: #e74c3c;
+            background-color: #fef2f2;
+        }
+        .custom-amount {
+            margin-top: 20px;
+        }
+        .impact-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .impact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .impact-icon {
+            font-size: 24px;
+            color: #e74c3c;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="donation-container">
+        <div class="donation-card">
+            <div class="donation-header">
+                <h1>Faire un don</h1>
+                <p>Votre générosité peut faire une différence dans la vie de nombreuses personnes</p>
+            </div>
+
+            <form th:action="@{/donate}" method="post">
+                <div class="mb-4">
+                    <label class="form-label">Choisissez un montant</label>
+                    <div class="amount-options">
+                        <div class="amount-option" onclick="selectAmount(50)">
+                            <h3>50 DH</h3>
+                            <small>Petit don</small>
+                        </div>
+                        <div class="amount-option" onclick="selectAmount(100)">
+                            <h3>100 DH</h3>
+                            <small>Don moyen</small>
+                        </div>
+                        <div class="amount-option" onclick="selectAmount(200)">
+                            <h3>200 DH</h3>
+                            <small>Grand don</small>
+                        </div>
+                    </div>
+                    <div class="custom-amount">
+                        <label for="amount" class="form-label">Ou entrez un montant personnalisé</label>
+                        <input type="number" class="form-control" id="amount" name="amount" min="10" step="10" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="name" class="form-label">Votre nom</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="email" class="form-label">Votre email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="message" class="form-label">Message (optionnel)</label>
+                    <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+                </div>
+
+                <div class="impact-section">
+                    <h4>L'impact de votre don</h4>
+                    <div class="impact-item">
+                        <i class="fas fa-heart impact-icon"></i>
+                        <span>Aide à fournir des repas aux personnes dans le besoin</span>
+                    </div>
+                    <div class="impact-item">
+                        <i class="fas fa-home impact-icon"></i>
+                        <span>Contribue à l'hébergement des sans-abri</span>
+                    </div>
+                    <div class="impact-item">
+                        <i class="fas fa-graduation-cap impact-icon"></i>
+                        <span>Supporte l'éducation des enfants défavorisés</span>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-donate">
+                        <i class="fas fa-heart me-2"></i>Faire un don maintenant
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="donation-container mt-5">
+        <div class="donation-card">
+            <div class="donation-header">
+                <h2>Derniers dons</h2>
+            </div>
+            <div th:if="${donations != null and !donations.isEmpty()}">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Montant</th>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="donation : ${donations}">
+                            <td th:text="${donation.amount} + ' DH'"></td>
+                            <td th:text="${donation.name}"></td>
+                            <td th:text="${donation.email}"></td>
+                            <td th:text="${#dates.format(donation.date, 'dd/MM/yyyy HH:mm')}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:unless="${donations != null and !donations.isEmpty()}">
+                <p>Aucun don effectué pour le moment.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function selectAmount(amount) {
+            document.getElementById('amount').value = amount;
+            // Remove selected class from all options
+            document.querySelectorAll('.amount-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+        }
+    </script>
+</body>
+</html> 

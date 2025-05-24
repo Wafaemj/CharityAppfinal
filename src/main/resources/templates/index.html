@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartShare | Modern Charity Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <!-- i18n Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/i18next@21.6.10/dist/umd/i18next.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-browser-languagedetector@6.1.3/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
+    <script src="https://unpkg.com/i18next-http-backend@1.3.1/i18nextHttpBackend.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-i18next@1.2.1/dist/umd/jquery-i18next.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF5A5F',
+                        secondary: '#00A699',
+                        dark: '#2D2926',
+                        light: '#F7F7F7',
+                        accent: '#FFB400',
+                        highlight: '#7BDFF2'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 5s infinite',
+                        'wave': 'wave 8s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        wave: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '10%': { transform: 'rotate(14deg)' },
+                            '20%': { transform: 'rotate(-8deg)' },
+                            '30%': { transform: 'rotate(14deg)' },
+                            '40%': { transform: 'rotate(-4deg)' },
+                            '50%': { transform: 'rotate(10deg)' },
+                            '60%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(0deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #F7F7F7;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(255,90,95,0.1) 0%, rgba(0,166,153,0.1) 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .impact-counter {
+            animation: pulse-slow 5s infinite;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -5px;
+            left: 0;
+            background-color: #FF5A5F;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .mobile-menu.open {
+            max-height: 500px;
+        }
+
+        .heart-beat {
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .donation-progress {
+            transition: width 1s ease-in-out;
+        }
+
+        .floating-shape {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .wave-animation {
+            animation: wave 8s linear infinite;
+            transform-origin: 70% 70%;
+            display: inline-block;
+        }
+
+        .glow-effect {
+            box-shadow: 0 0 15px rgba(255, 90, 95, 0.5);
+        }
+
+        .glow-effect:hover {
+            box-shadow: 0 0 25px rgba(255, 90, 95, 0.8);
+        }
+
+        .interactive-card {
+            perspective: 1000px;
+        }
+
+        .interactive-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .interactive-card:hover .interactive-card-inner {
+            transform: rotateY(10deg);
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid #FF5A5F;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #FF5A5F }
+        }
+
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #FF5A5F 0%, #00A699 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-light text-dark">
+<!-- Navigation -->
+<nav class="bg-white shadow-md fixed w-full z-50">
+    <div class="container mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <div class="heart-beat text-primary mr-2">
+                    <i class="fas fa-heart text-2xl"></i>
+                </div>
+                <a href="#" class="text-xl font-bold">Heart<span class="text-primary">Share</span></a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="nav-link text-dark hover:text-primary font-medium" data-i18n="nav.home">Home</a>
+                <a href="#about" class="nav-link text-dark hover:text-primary font-medium" data-i18n="nav.about">About</a>
+                <a href="#causes" class="nav-link text-dark hover:text-primary font-medium" data-i18n="nav.causes">Causes</a>
+                <a href="#contact" class="nav-link text-dark hover:text-primary font-medium" data-i18n="nav.contact">Contact</a>
+                <a href="/donate" class="bg-primary hover:bg-red-500 text-white px-6 py-2 rounded-full font-medium transition duration-300 transform hover:scale-105 glow-effect" data-i18n="nav.donate">Donate Now</a>
+
+                <!-- Language Selector -->
+                <div class="relative">
+                    <button id="languageButton" onclick="toggleLanguageMenu()" class="flex items-center space-x-2 text-dark hover:text-primary">
+                        <span id="currentLanguage">EN</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="languageMenu" class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg py-2 hidden">
+                        <button onclick="changeLanguage('en')" class="block w-full text-left px-4 py-2 text-sm text-dark hover:bg-gray-100">English</button>
+                        <button onclick="changeLanguage('fr')" class="block w-full text-left px-4 py-2 text-sm text-dark hover:bg-gray-100">Français</button>
+                        <button onclick="changeLanguage('ar')" class="block w-full text-left px-4 py-2 text-sm text-dark hover:bg-gray-100">العربية</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button onclick="toggleMobileMenu()" class="text-dark hover:text-primary">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex flex-col space-y-4">
+                <a href="#home" class="nav-link text-dark hover:text-primary block px-3 py-2 rounded-md font-medium" data-i18n="nav.home">Home</a>
+                <a href="#about" class="nav-link text-dark hover:text-primary block px-3 py-2 rounded-md font-medium" data-i18n="nav.about">About</a>
+                <a href="#causes" class="nav-link text-dark hover:text-primary block px-3 py-2 rounded-md font-medium" data-i18n="nav.causes">Causes</a>
+                <a href="#contact" class="nav-link text-dark hover:text-primary block px-3 py-2 rounded-md font-medium" data-i18n="nav.contact">Contact</a>
+                <a href="/donate" class="bg-primary hover:bg-red-500 text-white px-6 py-2 rounded-full font-medium mt-2 w-full transition duration-300 glow-effect" data-i18n="nav.donate">Donate Now</a>
+
+                <!-- Mobile Language Selector -->
+                <div class="border-t pt-4">
+                    <div class="flex space-x-4">
+                        <button onclick="changeLanguage('en')" class="text-dark hover:text-primary">EN</button>
+                        <button onclick="changeLanguage('fr')" class="text-dark hover:text-primary">FR</button>
+                        <button onclick="changeLanguage('ar')" class="text-dark hover:text-primary">AR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero-gradient relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full">
+            <div class="absolute top-20 left-20 w-32 h-32 rounded-full bg-primary/10 animate-pulse"></div>
+            <div class="absolute top-1/3 right-1/4 w-24 h-24 rounded-full bg-secondary/10 animate-pulse"></div>
+            <div class="absolute bottom-20 right-20 w-40 h-40 rounded-full bg-accent/10 animate-pulse"></div>
+            <div class="absolute bottom-1/3 left-1/4 w-20 h-20 rounded-full bg-primary/10 animate-pulse"></div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center py-20 md:py-32 relative z-10">
+        <div class="md:w-1/2 mb-12 md:mb-0" data-aos="fade-right">
+            <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6">
+                <span class="gradient-text typewriter" data-i18n="hero.title">Change Lives</span> With Your <span class="text-primary">Support</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 mb-8" data-i18n="hero.subtitle">
+                Join our movement to create lasting change. Every contribution helps us build a better future for communities in need around the world.
+            </p>
+            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="/donate" class="bg-primary hover:bg-red-500 text-white px-8 py-3 rounded-full font-medium transition duration-300 transform hover:scale-105 glow-effect" data-i18n="nav.donate">
+                    Donate Now <i class="fas fa-heart ml-2"></i>
+                </a>
+                <button onclick="scrollToSection('about')" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-3 rounded-full font-medium transition duration-300 transform hover:scale-105" data-i18n="hero.learnMore">
+                    Learn More <i class="fas fa-arrow-down ml-2 scroll-indicator"></i>
+                </button>
+            </div>
+
+            <div class="mt-12 flex flex-wrap gap-4">
+                <div class="flex items-center bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                    <div class="bg-primary/10 p-2 rounded-full mr-3">
+                        <i class="fas fa-hands-helping text-primary"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-dark">1,200+</p>
+                        <p class="text-gray-500 text-sm" data-i18n="hero.volunteers">Volunteers</p>
+                    </div>
+                </div>
+                <div class="flex items-center bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                    <div class="bg-secondary/10 p-2 rounded-full mr-3">
+                        <i class="fas fa-globe text-secondary"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-dark">50+</p>
+                        <p class="text-gray-500 text-sm" data-i18n="hero.countries">Countries</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:w-1/2" data-aos="fade-left">
+            <div class="relative interactive-card">
+                <div class="interactive-card-inner">
+                    <img src="https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Volunteers helping community" class="rounded-2xl shadow-2xl w-full">
+                    <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-xl shadow-lg" data-aos="fade-up" data-aos-delay="300">
+                        <div class="flex items-center">
+                            <div class="bg-primary rounded-full p-3 mr-3">
+                                <i class="fas fa-hands-helping text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-dark">Join Us</p>
+                                <p class="text-gray-500 text-sm">Become a volunteer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 right-0 flex justify-center pb-4">
+        <button onclick="scrollToSection('about')" class="text-primary animate-bounce">
+            <i class="fas fa-chevron-down text-2xl scroll-indicator"></i>
+        </button>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="about.title">About <span class="text-primary">HeartShare</span></h2>
+            <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-3xl mx-auto" data-i18n="about.subtitle">
+                HeartShare is a global non-profit organization dedicated to creating sustainable solutions for communities in need. Founded in 2010, we've impacted over 2 million lives across 50 countries.
+            </p>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0" data-aos="fade-right">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our team" class="rounded-2xl shadow-lg w-full">
+                    <div class="absolute -bottom-6 -left-6 bg-secondary p-6 rounded-xl shadow-lg text-white" data-aos="fade-up" data-aos-delay="300">
+                        <p class="text-2xl font-bold">12+</p>
+                        <p class="text-sm" data-i18n="about.years">Years of Service</p>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 md:pl-12" data-aos="fade-left">
+                <h3 class="text-2xl font-bold mb-6" data-i18n="about.mission">Our Mission & Vision</h3>
+                <p class="text-gray-600 mb-6" data-i18n="about.missionText">
+                    We believe in a world where everyone has access to basic necessities, education, and opportunities to thrive. Our mission is to bridge the gap between those who want to help and those who need help.
+                </p>
+
+                <div class="space-y-6">
+                    <div class="flex card-hover bg-gray-50 p-4 rounded-xl">
+                        <div class="mr-4">
+                            <div class="bg-primary/10 p-3 rounded-full">
+                                <i class="fas fa-hand-holding-heart text-primary text-xl"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2" data-i18n="about.compassionate">Compassionate Giving</h4>
+                            <p class="text-gray-600" data-i18n="about.compassionateText">We ensure 90% of donations go directly to programs that help people in need.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex card-hover bg-gray-50 p-4 rounded-xl">
+                        <div class="mr-4">
+                            <div class="bg-secondary/10 p-3 rounded-full">
+                                <i class="fas fa-globe text-secondary text-xl"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2" data-i18n="about.global">Global Reach</h4>
+                            <p class="text-gray-600" data-i18n="about.globalText">Our network spans across 50 countries with local teams ensuring effective implementation.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex card-hover bg-gray-50 p-4 rounded-xl">
+                        <div class="mr-4">
+                            <div class="bg-accent/10 p-3 rounded-full">
+                                <i class="fas fa-chart-line text-accent text-xl"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2" data-i18n="about.transparent">Transparent Impact</h4>
+                            <p class="text-gray-600" data-i18n="about.transparentText">We provide detailed reports on how your donations are making a difference.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <button onclick="openVideoModal('about')" class="flex items-center text-primary font-medium" data-i18n="about.watchStory">
+                        <i class="fas fa-play-circle mr-2 text-xl"></i> Watch our story
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-16 bg-dark text-white">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-4xl font-bold mb-2 impact-counter">2.1M+</div>
+                <p class="text-gray-400">Lives Impacted</p>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-4xl font-bold mb-2 impact-counter">50+</div>
+                <p class="text-gray-400">Countries Reached</p>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-4xl font-bold mb-2 impact-counter">1,250+</div>
+                <p class="text-gray-400">Active Volunteers</p>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="400">
+                <div class="text-4xl font-bold mb-2 impact-counter">$28M+</div>
+                <p class="text-gray-400">Funds Raised</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Causes Section -->
+<section id="causes" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="causes.title">Our <span class="text-primary">Causes</span></h2>
+            <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-3xl mx-auto" data-i18n="causes.subtitle">
+                We focus on several key areas where we can make the most significant impact. Choose a cause close to your heart and contribute to meaningful change.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Cause 1 -->
+            <div class="card-hover bg-white rounded-xl overflow-hidden shadow-md transition duration-500" data-aos="fade-up" data-aos-delay="100">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Education for children" class="w-full h-48 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium" data-i18n="causes.education">
+                        Education
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2" data-i18n="causes.educationTitle">Education for All</h3>
+                    <p class="text-gray-600 mb-4" data-i18n="causes.educationText">Building schools and providing scholarships for underprivileged children in developing countries.</p>
+
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span data-i18n="causes.raised">Raised: $45,000</span>
+                            <span data-i18n="causes.goal">Goal: $75,000</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-primary h-2 rounded-full donation-progress" style="width: 60%"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="text-sm text-gray-500" data-i18n="causes.funded">60% funded</span>
+                        </div>
+                        <a href="/donate" class="text-primary hover:text-red-500 font-medium" data-i18n="causes.donate">
+                            Donate <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cause 2 -->
+            <div class="card-hover bg-white rounded-xl overflow-hidden shadow-md transition duration-500" data-aos="fade-up" data-aos-delay="200">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Clean water initiative" class="w-full h-48 object-cover">
+                    <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full text-sm font-medium" data-i18n="causes.water">
+                        Water
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2" data-i18n="causes.waterTitle">Clean Water Initiative</h3>
+                    <p class="text-gray-600 mb-4" data-i18n="causes.waterText">Providing access to clean drinking water in communities affected by water scarcity.</p>
+
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span data-i18n="causes.raised">Raised: $68,000</span>
+                            <span data-i18n="causes.goal">Goal: $100,000</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-secondary h-2 rounded-full donation-progress" style="width: 68%"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="text-sm text-gray-500" data-i18n="causes.funded">68% funded</span>
+                        </div>
+                        <a href="/donate" class="text-secondary hover:text-teal-600 font-medium" data-i18n="causes.donate">
+                            Donate <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cause 3 -->
+            <div class="card-hover bg-white rounded-xl overflow-hidden shadow-md transition duration-500" data-aos="fade-up" data-aos-delay="300">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Hunger relief" class="w-full h-48 object-cover">
+                    <div class="absolute top-4 right-4 bg-accent text-dark px-3 py-1 rounded-full text-sm font-medium" data-i18n="causes.hunger">
+                        Hunger
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2" data-i18n="causes.hungerTitle">Hunger Relief Program</h3>
+                    <p class="text-gray-600 mb-4" data-i18n="causes.hungerText">Providing meals and sustainable food solutions to families facing food insecurity.</p>
+
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span data-i18n="causes.raised">Raised: $32,000</span>
+                            <span data-i18n="causes.goal">Goal: $50,000</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-accent h-2 rounded-full donation-progress" style="width: 64%"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="text-sm text-gray-500" data-i18n="causes.funded">64% funded</span>
+                        </div>
+                        <a href="/donate" class="text-accent hover:text-yellow-600 font-medium" data-i18n="causes.donate">
+                            Donate <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-12" data-aos="fade-up">
+            <button onclick="scrollToSection('causes')" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-3 rounded-full font-medium transition duration-300" data-i18n="causes.viewAll">
+                View All Causes <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Video Section -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="bg-primary/10 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0" data-aos="fade-right">
+                <h3 class="text-2xl font-bold mb-4">See Our Work in Action</h3>
+                <p class="text-gray-700 mb-6">
+                    Watch how your donations are transforming lives and communities around the world.
+                </p>
+                <button onclick="openVideoModal('impact')" class="bg-primary hover:bg-red-500 text-white px-6 py-2 rounded-full font-medium transition duration-300 inline-flex items-center">
+                    <i class="fas fa-play-circle mr-2 text-xl"></i> Watch Impact Video
+                </button>
+            </div>
+            <div class="md:w-1/2" data-aos="fade-left">
+                <div class="relative rounded-xl overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1522881193459-3ae6d0c9d58d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Impact video thumbnail" class="w-full">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <button onclick="openVideoModal('impact')" class="bg-white/20 backdrop-blur-sm text-white rounded-full p-4 hover:bg-white/30 transition duration-300">
+                            <i class="fas fa-play text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section id="testimonials" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Inspiring <span class="text-primary">Stories</span></h2>
+            <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-3xl mx-auto">
+                Hear from the people whose lives have been transformed through our programs and your generous support.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Testimonial 1 -->
+            <div class="card-hover bg-white p-8 rounded-xl shadow-md transition duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="flex items-center mb-6">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Sarah Johnson" class="w-16 h-16 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold">Sarah Johnson</h4>
+                        <p class="text-gray-500 text-sm">Volunteer since 2015</p>
+                    </div>
+                </div>
+                <div class="text-gray-600 mb-6">
+                    "Volunteering with HeartShare has been the most rewarding experience of my life. Seeing the direct impact of our work on communities keeps me coming back year after year."
+                </div>
+                <div class="flex space-x-1 text-yellow-400">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="card-hover bg-white p-8 rounded-xl shadow-md transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex items-center mb-6">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="David Chen" class="w-16 h-16 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold">David Chen</h4>
+                        <p class="text-gray-500 text-sm">Donor since 2018</p>
+                    </div>
+                </div>
+                <div class="text-gray-600 mb-6">
+                    "I donate monthly because I trust HeartShare's transparency. Their detailed impact reports show exactly how my contributions are making a difference."
+                </div>
+                <div class="flex space-x-1 text-yellow-400">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="card-hover bg-white p-8 rounded-xl shadow-md transition duration-300" data-aos="fade-up" data-aos-delay="300">
+                <div class="flex items-center mb-6">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Amina Diallo" class="w-16 h-16 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold">Amina Diallo</h4>
+                        <p class="text-gray-500 text-sm">Program Beneficiary</p>
+                    </div>
+                </div>
+                <div class="text-gray-600 mb-6">
+                    "The clean water well HeartShare built in our village changed everything. My children no longer get sick, and I have time to work instead of walking hours for water."
+                </div>
+                <div class="flex space-x-1 text-yellow-400">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Volunteer Section -->
+<section id="volunteer" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0" data-aos="fade-right">
+                <img src="https://images.unsplash.com/photo-1549923746-c502d4885843?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Volunteers working" class="rounded-2xl shadow-lg w-full">
+            </div>
+            <div class="md:w-1/2 md:pl-12" data-aos="fade-left">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">Become a <span class="text-primary">Volunteer</span></h2>
+                <p class="text-gray-600 mb-8">
+                    Join our global network of volunteers and make a hands-on difference in communities around the world. No special skills required - just a willing heart!
+                </p>
+
+                <form id="volunteerForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="volunteerName" class="block text-gray-700 mb-1">Name</label>
+                            <input type="text" id="volunteerName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="volunteerEmail" class="block text-gray-700 mb-1">Email</label>
+                            <input type="email" id="volunteerEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="volunteerLocation" class="block text-gray-700 mb-1">Location</label>
+                        <input type="text" id="volunteerLocation" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                    </div>
+                    <div>
+                        <label for="volunteerSkills" class="block text-gray-700 mb-1">Skills/Interests</label>
+                        <textarea id="volunteerSkills" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                    </div>
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox rounded text-primary mr-2" required>
+                            <span class="text-gray-700">I agree to the terms and privacy policy</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="bg-primary hover:bg-red-500 text-white px-6 py-3 rounded-full font-medium transition duration-300 w-full">
+                        Join as Volunteer <i class="fas fa-hands-helping ml-2"></i>
+                    </button>
+                    <p id="volunteerMessage" class="text-sm mt-2 hidden"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2 mb-8 md:mb-0" data-aos="fade-right">
+                <h3 class="text-2xl md:text-3xl font-bold mb-2">Stay Updated</h3>
+                <p class="text-primary-100">
+                    Subscribe to our newsletter to receive updates on our projects, success stories, and how you can help.
+                </p>
+            </div>
+            <div class="md:w-1/2" data-aos="fade-left">
+                <form id="newsletterForm" class="flex flex-col sm:flex-row gap-4">
+                    <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-full focus:outline-none text-dark" required>
+                    <button type="submit" class="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-full font-medium transition duration-300">
+                        Subscribe <i class="fas fa-paper-plane ml-1"></i>
+                    </button>
+                </form>
+                <p id="newsletterMessage" class="mt-2 text-sm text-primary-100 hidden"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="contact.title">Get In <span class="text-primary">Touch</span></h2>
+            <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            <p class="text-gray-600 max-w-3xl mx-auto" data-i18n="contact.subtitle">
+                Have questions or want to get involved? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- Contact Form -->
+            <div class="bg-white rounded-xl p-8 shadow-md" data-aos="fade-right">
+                <form id="contactForm" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="contact.name">Your Name</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-300" required>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="contact.email">Email Address</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-300" required>
+                    </div>
+
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="contact.subject">Subject</label>
+                        <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-300" required>
+                    </div>
+
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="contact.message">Your Message</label>
+                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-300" required></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-primary hover:bg-red-500 text-white px-6 py-3 rounded-lg font-medium transition duration-300 transform hover:scale-105" data-i18n="contact.send">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="space-y-8" data-aos="fade-left">
+                <div class="bg-white rounded-xl p-8 shadow-md">
+                    <h3 class="text-xl font-bold mb-6" data-i18n="contact.info">Contact Information</h3>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-primary text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-medium" data-i18n="contact.address">Address</h4>
+                                <p class="text-gray-600">123 Charity Street, New York, NY 10001</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-phone text-primary text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-medium" data-i18n="contact.phone">Phone</h4>
+                                <p class="text-gray-600">+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-envelope text-primary text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-medium" data-i18n="contact.email">Email</h4>
+                                <p class="text-gray-600">info@heartshare.org</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-8 shadow-md">
+                    <h3 class="text-xl font-bold mb-6" data-i18n="contact.hours">Working Hours</h3>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600" data-i18n="contact.weekdays">Monday - Friday</span>
+                            <span class="font-medium">9:00 AM - 6:00 PM</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600" data-i18n="contact.saturday">Saturday</span>
+                            <span class="font-medium">10:00 AM - 4:00 PM</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600" data-i18n="contact.sunday">Sunday</span>
+                            <span class="font-medium">Closed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white pt-20 pb-10">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <!-- About -->
+            <div>
+                <h3 class="text-xl font-bold mb-6" data-i18n="footer.about">About HeartShare</h3>
+                <p class="text-gray-400 mb-6" data-i18n="footer.aboutText">
+                    HeartShare is dedicated to making a positive impact in communities worldwide through charitable initiatives and sustainable development programs.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-primary transition duration-300">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition duration-300">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition duration-300">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition duration-300">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-xl font-bold mb-6" data-i18n="footer.quickLinks">Quick Links</h3>
+                <ul class="space-y-4">
+                    <li>
+                        <a href="#home" class="text-gray-400 hover:text-primary transition duration-300" data-i18n="nav.home">Home</a>
+                    </li>
+                    <li>
+                        <a href="#about" class="text-gray-400 hover:text-primary transition duration-300" data-i18n="nav.about">About</a>
+                    </li>
+                    <li>
+                        <a href="#causes" class="text-gray-400 hover:text-primary transition duration-300" data-i18n="nav.causes">Causes</a>
+                    </li>
+                    <li>
+                        <a href="#contact" class="text-gray-400 hover:text-primary transition duration-300" data-i18n="nav.contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div>
+                <h3 class="text-xl font-bold mb-6" data-i18n="footer.newsletter">Newsletter</h3>
+                <p class="text-gray-400 mb-4" data-i18n="footer.newsletterText">
+                    Subscribe to our newsletter to receive updates on our latest initiatives and impact stories.
+                </p>
+                <form class="flex">
+                    <input type="email" placeholder="Your email" class="px-4 py-2 w-full rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary text-dark">
+                    <button type="submit" class="bg-primary hover:bg-red-500 px-4 py-2 rounded-r-lg transition duration-300" data-i18n="footer.subscribe">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+                <h3 class="text-xl font-bold mb-6" data-i18n="footer.contact">Contact Info</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <i class="fas fa-map-marker-alt text-primary mt-1 mr-3"></i>
+                        <span class="text-gray-400">123 Charity Street, New York, NY 10001</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-phone text-primary mt-1 mr-3"></i>
+                        <span class="text-gray-400">+1 (555) 123-4567</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-envelope text-primary mt-1 mr-3"></i>
+                        <span class="text-gray-400">info@heartshare.org</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+            <p class="text-gray-400" data-i18n="footer.copyright">© 2024 HeartShare. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Donation Modal -->
+<div id="donationModal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden backdrop-blur-sm">
+    <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+        <div class="flex justify-between items-center mb-6">
+            <h3 id="donationCauseTitle" class="text-xl font-bold">Make a Donation</h3>
+            <button onclick="closeDonationModal()" class="text-gray-500 hover:text-primary">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <div class="mb-6">
+            <h4 class="font-bold mb-4">Select Amount</h4>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <button onclick="selectAmount(25)" class="donation-amount-btn border-2 border-gray-300 px-4 py-2 rounded-lg font-medium transition duration-300">$25</button>
+                <button onclick="selectAmount(50)" class="donation-amount-btn border-2 border-gray-300 px-4 py-2 rounded-lg font-medium transition duration-300">$50</button>
+                <button onclick="selectAmount(100)" class="donation-amount-btn border-2 border-gray-300 px-4 py-2 rounded-lg font-medium transition duration-300">$100</button>
+                <button onclick="selectAmount(250)" class="donation-amount-btn border-2 border-gray-300 px-4 py-2 rounded-lg font-medium transition duration-300">$250</button>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <label for="customAmount" class="block text-gray-700 mb-1">Or enter custom amount</label>
+            <div class="relative">
+                <span class="absolute left-3 top-1/2 transform -translate-y-1/2">$</span>
+                <input type="number" id="customAmount" class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="0.00">
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <h4 class="font-bold mb-2">Payment Method</h4>
+            <div class="space-y-3">
+                <div class="flex items-center p-3 rounded-lg border border-gray-200">
+                    <input type="radio" id="creditCard" name="paymentMethod" value="creditCard" class="mr-2" checked>
+                    <label for="creditCard" class="flex items-center">
+                        <i class="fab fa-cc-visa text-blue-500 mr-2"></i>
+                        <i class="fab fa-cc-mastercard text-red-500 mr-2"></i>
+                        <i class="fab fa-cc-amex text-blue-600"></i>
+                    </label>
+                </div>
+                <div class="flex items-center p-3 rounded-lg border border-gray-200">
+                    <input type="radio" id="paypal" name="paymentMethod" value="paypal" class="mr-2">
+                    <label for="paypal" class="flex items-center">
+                        <i class="fab fa-cc-paypal text-blue-500 mr-2"></i>
+                        PayPal
+                    </label>
+                </div>
+                <div class="flex items-center p-3 rounded-lg border border-gray-200">
+                    <input type="radio" id="bankTransfer" name="paymentMethod" value="bankTransfer" class="mr-2">
+                    <label for="bankTransfer" class="flex items-center">
+                        <i class="fas fa-university text-gray-500 mr-2"></i>
+                        Bank Transfer
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <label class="flex items-center">
+                <input type="checkbox" class="form-checkbox rounded text-primary mr-2">
+                <span class="text-gray-700">Make this a monthly recurring donation</span>
+            </label>
+        </div>
+
+        <div class="bg-primary/10 p-4 rounded-lg mb-6">
+            <h4 class="font-bold mb-2">Your Impact</h4>
+            <p class="text-gray-600 text-sm">$25 can provide clean water for a family for a month</p>
+            <p class="text-gray-600 text-sm">$100 can send a child to school for a year</p>
+        </div>
+
+        <div class="flex justify-between">
+            <button onclick="closeDonationModal()" class="border border-gray-300 text-gray-700 px-6 py-2 rounded-full font-medium transition duration-300">
+                Cancel
+            </button>
+            <button onclick="processDonation()" class="bg-primary hover:bg-red-500 text-white px-6 py-2 rounded-full font-medium transition duration-300">
+                Complete Donation <i class="fas fa-heart ml-2"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Video Modal -->
+<div id="videoModal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden backdrop-blur-sm">
+    <div class="relative w-full max-w-4xl mx-4">
+        <button onclick="closeVideoModal()" class="absolute -top-10 right-0 text-white text-2xl hover:text-primary transition duration-300">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="aspect-w-16 aspect-h-9 bg-black rounded-xl overflow-hidden">
+            <iframe id="videoIframe" class="w-full h-96 md:h-[500px]" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- Donation Success Toast -->
+<div id="donationToast" class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center hidden z-50" data-aos="fade-up">
+    <i class="fas fa-check-circle mr-2 text-xl"></i>
+    <span>Thank you for your generous donation!</span>
+</div>
+
+<!-- Volunteer Success Toast -->
+<div id="volunteerToast" class="fixed bottom-4 right-4 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center hidden z-50" data-aos="fade-up">
+    <i class="fas fa-hands-helping mr-2 text-xl"></i>
+    <span>Thank you for signing up as a volunteer!</span>
+</div>
+
+<!-- Scroll to Top Button -->
+<button id="scrollToTop" onclick="scrollToTop()" class="fixed bottom-6 right-6 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-40 hidden transition duration-300 hover:bg-red-500">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    // Initialize AOS animation library
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 100
+    });
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+        const mobileMenu = document.querySelector('.mobile-menu');
+        mobileMenu.classList.toggle('open');
+    }
+
+    // Smooth scrolling for navigation links
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            window.scrollTo({
+                top: section.offsetTop - 80,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    // Scroll to top function
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Show scroll to top button when scrolling
+    window.addEventListener('scroll', function() {
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.remove('hidden');
+        } else {
+            scrollToTopBtn.classList.add('hidden');
+        }
+
+        // Highlight active navigation link
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (pageYOffset >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('text-primary');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('text-primary');
+            }
+        });
+    });
+
+    // Donation modal functions
+    function openDonationModal(causeTitle = '') {
+        const modal = document.getElementById('donationModal');
+        if (causeTitle) {
+            document.getElementById('donationCauseTitle').textContent = `Support ${causeTitle}`;
+        }
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDonationModal() {
+        document.getElementById('donationModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    function selectAmount(amount) {
+        document.getElementById('customAmount').value = amount;
+
+        // Remove active class from all buttons
+        const buttons = document.querySelectorAll('.donation-amount-btn');
+        buttons.forEach(btn => {
+            btn.classList.remove('bg-primary', 'text-white', 'border-primary');
+            btn.classList.add('border-gray-300');
+        });
+
+        // Add active class to clicked button
+        event.target.classList.add('bg-primary', 'text-white', 'border-primary');
+        event.target.classList.remove('border-gray-300');
+    }
+
+    function processDonation() {
+        const amount = document.getElementById('customAmount').value;
+        if (!amount || isNaN(amount) || amount <= 0) {
+            alert('Please enter a valid donation amount.');
+            return;
+        }
+
+        closeDonationModal();
+
+        // Show success toast
+        const toast = document.getElementById('donationToast');
+        toast.classList.remove('hidden');
+
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 5000);
+    }
+
+    // Video modal functions
+    function openVideoModal(type = '') {
+        const modal = document.getElementById('videoModal');
+        const iframe = document.getElementById('videoIframe');
+
+        // Different videos for different contexts
+        let videoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'; // Default video
+        if (type === 'about') {
+            videoUrl = 'https://www.youtube.com/embed/9No-FiEInLA?autoplay=1'; // About video
+        } else if (type === 'impact') {
+            videoUrl = 'https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1'; // Impact video
+        }
+
+        iframe.src = videoUrl;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeVideoModal() {
+        const modal = document.getElementById('videoModal');
+        const iframe = document.getElementById('videoIframe');
+        iframe.src = '';
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Newsletter form submission
+    document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+        const message = document.getElementById('newsletterMessage');
+
+        // Simulate submission
+        message.textContent = 'Thank you for subscribing! You will receive our next newsletter.';
+        message.classList.remove('hidden');
+        this.reset();
+
+        setTimeout(() => {
+            message.classList.add('hidden');
+        }, 5000);
+    });
+
+    // Contact form submission
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = document.getElementById('contactMessage');
+
+        // Simulate submission
+        message.textContent = 'Thank you for your message! We will get back to you soon.';
+        message.classList.remove('hidden');
+        message.classList.add('text-green-500');
+        this.reset();
+
+        setTimeout(() => {
+            message.classList.add('hidden');
+            message.classList.remove('text-green-500');
+        }, 5000);
+    });
+
+    // Volunteer form submission
+    document.getElementById('volunteerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = document.getElementById('volunteerMessage');
+        const toast = document.getElementById('volunteerToast');
+
+        // Simulate submission
+        message.textContent = 'Thank you for signing up! We will contact you soon.';
+        message.classList.remove('hidden');
+        message.classList.add('text-green-500');
+        this.reset();
+
+        // Show toast
+        toast.classList.remove('hidden');
+
+        setTimeout(() => {
+            message.classList.add('hidden');
+            message.classList.remove('text-green-500');
+            toast.classList.add('hidden');
+        }, 5000);
+    });
+
+    // Interactive card tilt effect
+    const interactiveCards = document.querySelectorAll('.interactive-card');
+    interactiveCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.querySelector('.interactive-card-inner').style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // Reset on mouse leave
+        card.addEventListener('mouseleave', () => {
+            card.querySelector('.interactive-card-inner').style.transform = 'rotateY(0deg) rotateX(0deg)';
+        });
+    });
+
+    // Animate progress bars on scroll
+    function animateProgressBars() {
+        const progressBars = document.querySelectorAll('.donation-progress');
+        progressBars.forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0';
+            setTimeout(() => {
+                bar.style.width = width;
+            }, 100);
+        });
+    }
+
+    // Intersection Observer for progress bars
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateProgressBars();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {threshold: 0.1});
+
+    // Observe the causes section
+    const causesSection = document.getElementById('causes');
+    if (causesSection) {
+        observer.observe(causesSection);
+    }
+
+    // Vérification de la présence des modules i18next
+    console.log('i18next:', window.i18next);
+    console.log('i18nextBrowserLanguageDetector:', window.i18nextBrowserLanguageDetector);
+    console.log('i18nextHttpBackend:', window.i18nextHttpBackend);
+
+    i18next
+        .use(window.i18nextBrowserLanguageDetector)
+        .use(window.i18nextHttpBackend)
+        .init({
+            fallbackLng: 'en',
+            debug: true,
+            backend: {
+                loadPath: '/i18n/{{lng}}.json'
+            },
+            detection: {
+                order: ['querystring', 'cookie', 'localStorage', 'navigator'],
+                lookupQuerystring: 'lng',
+                lookupCookie: 'i18next',
+                lookupLocalStorage: 'i18nextLng',
+                caches: ['localStorage', 'cookie']
+            }
+        });
+
+    // Fonction pour changer la langue
+    function changeLanguage(lang) {
+        i18next.changeLanguage(lang, (err, t) => {
+            if (err) {
+                console.error('Erreur lors du changement de langue:', err);
+                return;
+            }
+            
+            // Mettre à jour l'affichage de la langue courante
+            document.getElementById('currentLanguage').textContent = lang.toUpperCase();
+            
+            // Mettre à jour tous les éléments avec data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = t(key);
+                
+                if (element.tagName === 'INPUT' && element.type === 'text') {
+                    element.placeholder = translation;
+                } else {
+                    element.textContent = translation;
+                }
+            });
+
+            // Gérer la direction du texte pour l'arabe
+            if (lang === 'ar') {
+                console.log('Setting RTL for Arabic');
+                document.documentElement.dir = 'rtl';
+                document.body.classList.add('rtl');
+            } else {
+                console.log('Setting LTR for other languages');
+                document.documentElement.dir = 'ltr';
+                document.body.classList.remove('rtl');
+            }
+
+            // Fermer le menu des langues
+            document.getElementById('languageMenu').classList.add('hidden');
+        });
+    }
+
+    // Fonction pour afficher/masquer le menu des langues
+    function toggleLanguageMenu() {
+        const menu = document.getElementById('languageMenu');
+        menu.classList.toggle('hidden');
+    }
+
+    // Fermer le menu des langues si on clique en dehors
+    document.addEventListener('click', (event) => {
+        const menu = document.getElementById('languageMenu');
+        const button = document.getElementById('languageButton');
+        if (!menu.contains(event.target) && !button.contains(event.target)) {
+            menu.classList.add('hidden');
+        }
+    });
+
+    // Initialiser les traductions au chargement de la page
+    document.addEventListener('DOMContentLoaded', () => {
+        // Détecter la langue du navigateur
+        const browserLang = navigator.language.split('-')[0];
+        const supportedLangs = ['en', 'fr', 'ar'];
+        
+        // Si la langue du navigateur est supportée, l'utiliser
+        if (supportedLangs.includes(browserLang)) {
+            changeLanguage(browserLang);
+        } else {
+            // Sinon, utiliser l'anglais par défaut
+            changeLanguage('en');
+        }
+    });
+
+    // Exposer les fonctions au scope global pour que les boutons puissent les appeler
+    window.changeLanguage = changeLanguage;
+    window.toggleLanguageMenu = toggleLanguageMenu;
+</script>
+</body>
+</html>

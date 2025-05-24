@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "causes": "Causes",
+    "impact": "Impact",
+    "stories": "Témoignages",
+    "volunteer": "Bénévole",
+    "donate": "Faire un don"
+  },
+  "hero": {
+    "title": "Changez des vies avec votre soutien",
+    "subtitle": "Rejoignez notre mouvement pour créer un changement durable. Chaque contribution nous aide à construire un meilleur avenir pour les communautés dans le besoin à travers le monde.",
+    "learnMore": "En savoir plus",
+    "volunteers": "Bénévoles",
+    "countries": "Pays"
+  },
+  "about": {
+    "title": "À propos de HeartShare",
+    "subtitle": "HeartShare est une organisation mondiale à but non lucratif dédiée à la création de solutions durables pour les communautés dans le besoin. Fondée en 2010, nous avons touché plus de 2 millions de vies dans 50 pays.",
+    "mission": "Mission & Vision",
+    "missionText": "Nous croyons en un monde où chacun a accès aux nécessités de base, à l'éducation et aux opportunités de s'épanouir. Notre mission est de combler le fossé entre ceux qui veulent aider et ceux qui ont besoin d'aide.",
+    "compassionate": "Don Compassionnel",
+    "compassionateText": "Nous nous assurons que 90% des dons vont directement aux programmes qui aident les personnes dans le besoin.",
+    "global": "Portée Mondiale",
+    "globalText": "Notre réseau s'étend sur 50 pays avec des équipes locales assurant une mise en œuvre efficace.",
+    "transparent": "Impact Transparent",
+    "transparentText": "Nous fournissons des rapports détaillés sur la façon dont vos dons font une différence.",
+    "watchStory": "Regarder notre histoire"
+  },
+  "causes": {
+    "title": "Nos Causes",
+    "subtitle": "Nous nous concentrons sur plusieurs domaines clés où nous pouvons avoir le plus grand impact. Choisissez une cause qui vous tient à cœur et contribuez à un changement significatif.",
+    "viewAll": "Voir toutes les causes",
+    "education": "Éducation",
+    "water": "Eau",
+    "hunger": "Faim",
+    "donate": "Faire un don"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Vous avez des questions ou souhaitez vous impliquer ? Nous aimerions avoir de vos nouvelles. Contactez-nous par l'un de ces canaux.",
+    "address": "Adresse",
+    "phone": "Téléphone",
+    "email": "Email",
+    "followUs": "Suivez-nous",
+    "sendMessage": "Envoyez-nous un message",
+    "name": "Nom",
+    "subject": "Sujet",
+    "message": "Message",
+    "send": "Envoyer le message"
+  },
+  "footer": {
+    "newsletter": "Newsletter",
+    "newsletterText": "Abonnez-vous pour recevoir des mises à jour sur nos derniers projets et histoires de réussite.",
+    "quickLinks": "Liens rapides",
+    "ourCauses": "Nos causes",
+    "rights": "Tous droits réservés."
+  }
+} 
